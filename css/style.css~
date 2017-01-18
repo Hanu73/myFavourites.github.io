@@ -1,0 +1,29 @@
+/* Styles go here */
+
+.flexbox-container {
+    display: -ms-flex;
+    display: -webkit-flex;
+    display: flex;
+    height: 100%;
+}
+.flexbox-container > div {
+    width: 30%;
+    padding: 10px;
+    border: 1px solid black;
+    float: right;
+    overflow-x: auto;
+}
+.flexbox-container > div:first-child {
+    margin-right: 20px;
+    width: 70%;
+ overflow-x: auto;
+}
+.my-icon svg {
+    size: 20px;
+}
+.my-favourite svg {
+    fill: pink;
+}
+td {
+    align: center;
+}

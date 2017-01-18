@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <link rel="stylesheet" href="https://rawgit.com/angular/bower-material/v0.7.0-rc1-master-84842ff/angular-material.min.css">
+      <link rel="stylesheet" href="css/style.css">
+      <link rel="stylesheet" href="css/xeditable.min.css">
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.0/angular.min.js"></script>
+      <script type="text/javascript" src="https://rawgit.com/hammerjs/hammer.js/2.0.4/hammer.min.js"></script>
+      <script type="text/javascript" src="https://rawgit.com/angular/bower-material/v0.7.0-rc1-master-84842ff/angular-material.min.js"></script>
+      <script type="text/javascript" src="https://rawgit.com/angular/bower-angular-aria/v1.3.0/angular-aria.min.js"></script>
+      <script type="text/javascript" src="https://rawgit.com/angular/bower-angular-animate/v1.3.0/angular-animate.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.7.1/angular-material-icons.min.js"></script> 
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script src="js/favourite.js"></script>
+      <script src="js/xeditable.min.js"></script>
+   </head>
+   <body ng-app="favoriteApp" ng-controller="favCtrl">
+      <md-toolbar class="md-hue-2">
+         <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" aria-label="Settings" ng-disabled="true">
+               <ng-md-icon icon="menu" ></ng-md-icon>
+            </md-button>
+            <h2>
+               <span>MyApp</span>
+            </h2>
+            <span flex></span>
+            <div class="nav-buttons">
+               <md-button >Menu1</md-button>
+               <md-button >Menu2</md-button>
+               <md-button >Menu3</md-button>
+            </div>
+         </div>
+      </md-toolbar>
+      <md-divider></md-divider>
+      <div class="flexbox-container">
+         <div class="first">
+            <h3>Contacts</h3>
+            <table class="table table-bordered table-hover table-condensed">
+               <tr style="font-weight: bold">
+                  <td style="width:35%">Name</td>
+                  <td style="width:20%">Phone</td>
+                  <td style="width:20%">Address</td>
+                  <td style="width:25%">Edit</td>
+                  <td style="width:25%">Mark as Favourite</td>
+               </tr>
+               <tr ng-repeat="user in items">
+                  <td>
+                     <!-- editable username (text with validation) -->
+                     <span editable-text="user.name" e-name="name" e-form="rowform" onbeforesave="checkName($data, user.id)">
+                     {{ user.name || 'empty' }}
+                     </span>
+                  </td>
+                  <td>
+                     <!-- editable phone (text-phone) -->
+                     <span editable-text="user.phone" e-name="phone" e-form="rowform" onbeforesave="checkPhone($data, user.id)">
+                     {{user.phone || 'empty'}}
+                     </span>
+                  </td>
+                  <td>
+                     <!-- editable address (text address) -->
+                     <span editable-text="user.address" e-name="address" e-form="rowform" onbeforesave="checkAddress($data, user.id)">
+                     {{user.address || 'empty'}}
+                     </span>
+                  </td>
+                  <td style="white-space: nowrap">
+                     <!-- form -->
+                     <form editable-form name="rowform" onbeforesave="saveUser($data, user.id)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == user">
+                        <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                        save
+                        </button>
+                        <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+                        cancel
+                        </button>
+                     </form>
+                     <div class="buttons" ng-show="!rowform.$visible">
+                        <button type="button" class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+                        <button type="button" class="btn btn-danger" ng-click="removeContact($index)">del</button>
+                     </div>
+                  </td>
+                  <td  align="center">
+                     <ng-md-icon icon="favorite" size="30" ng-click="markFavourite=!markFavourite;addToFavourites(user)"  ng-class="{'my-icon':!markFavourite,'my-favourite':markFavourite}" ng-model="markFavourite"></ng-md-icon>
+                  </td>
+               </tr>
+            </table>
+         </div>
+         <div>
+            <h3>Favourites</h3>
+            <md-content>
+            <md-list flex>
+            <md-list-item class="md-3-line"  ng-repeat="fav in favourites"  ng-click="null">
+               <div class="md-list-item-text" layout="column">
+                  <div>
+                     <h2>{{fav.name}}</h2>
+                  </div>
+                  <div>
+                     <h2>{{fav.phone}}</h2>
+                  </div>
+               </div>
+               <md-divider ></md-divider>
+            </md-list-item>
+            <md-content>
+         </div>
+         <md-button class="md-fab md-fab-bottom-right" aria-label="Add"  ng-click="addContact()">
+            <ng-md-icon icon="add" style="fill:blue"  ></ng-md-icon>
+         </md-button>
+      </div>
+   </body>
+</html>
